@@ -11,18 +11,20 @@ def startparse():
     count = 0
     flag = True
     while True:
-        len_signal = 2
+        len_signal = 0
         len_buffer = b""
         data_buffer = b""
 
         if flag:
             reply = reply+s.recv(1024)
         #这里判断长度头的字节数有几个，目前设置了最大4个，也就是支持int的最大上限的2倍的单个数据传输
-        if reply[1] == 10:
+        if reply.__len__()>=2 and reply[1] == 10:
             len_signal=1
-        elif reply[3] == 10:
+        elif reply.__len__()>=3 and reply[2] == 10:
+            len_signal=2
+        elif reply.__len__()>=4 and reply[3] == 10:
             len_signal=3
-        elif reply[4] == 10:
+        elif reply.__len__()>=5 and reply[4] == 10:
             len_signal=4
         for k in range(0,len_signal):
             len_buffer = len_buffer + six.int2byte(reply[k])
