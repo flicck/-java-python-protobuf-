@@ -16,8 +16,9 @@ def startparse():
         data_buffer = b""
 
         if flag:
-            reply = reply+s.recv(1024)
-        #这里判断长度头的字节数有几个，目前设置了最大4个，也就是支持int的最大上限的2倍的单个数据传输
+        #设置每次接收文件长度
+            reply = reply+s.recv(1024*1024)
+        #这里判断长度头的字节数有几个，目前设置了最大4个，绝对够用
         if reply.__len__()>=2 and reply[1] == 10:
             len_signal=1
         elif reply.__len__()>=3 and reply[2] == 10:
